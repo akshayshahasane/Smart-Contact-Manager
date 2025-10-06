@@ -11,30 +11,35 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <div class="my-card mt-1">
+                <div class="my-card mt-2">
 
                     <!-- Alert message -->
                     <div th:if="${message}"
-                         th:classappend="${message.type}"
-                         class="alert" role="alert">
-                        <p class="text-center" th:text="${message.content}"></p>
+                         th:classappend="' alert-' + ${message.type}"
+                         class="alert text-center" role="alert">
+                        <p th:text="${message.content}"></p>
                     </div>
 
-                    <div class="container text-center">
+                    <div class="text-center mb-3">
                         <img style="width: 80px" th:src="@{/image/sign-form.png}" alt="form logo"/>
                     </div>
 
-                    <h1 class="text-center">Register Here !!</h1>
+                    <h1 class="text-center mb-4">Register Here !!</h1>
 
-                    <form th:action="@{/do_register}" method="post" th:object="${user}">
+                    <form novalidate th:action="@{/do_register}" method="post" th:object="${user}">
 
                         <!-- name field -->
                         <div class="mb-3">
                             <label for="name_field">Your Name</label>
                             <input type="text" th:field="*{name}"
                                    class="form-control"
+                                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
                                    id="name_field"
                                    placeholder="Enter here" required />
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('name')}"
+                                 th:each="e : ${#fields.errors('name')}"
+                                 th:text="${e}"></div>
                         </div>
 
                         <!-- email field -->
@@ -42,8 +47,13 @@
                             <label for="email_field">Your Email</label>
                             <input type="email" th:field="*{email}"
                                    class="form-control"
+                                   th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
                                    id="email_field"
                                    placeholder="Enter here" required />
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('email')}"
+                                 th:each="e : ${#fields.errors('email')}"
+                                 th:text="${e}"></div>
                         </div>
 
                         <!-- password field -->
@@ -51,28 +61,47 @@
                             <label for="password_field">Your Password</label>
                             <input type="password" th:field="*{password}"
                                    class="form-control"
+                                   th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
                                    id="password_field"
                                    placeholder="Enter here" required />
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('password')}"
+                                 th:each="e : ${#fields.errors('password')}"
+                                 th:text="${e}"></div>
                         </div>
 
                         <!-- about field -->
                         <div class="mb-3">
+                            <label for="about_field">About Yourself</label>
                             <textarea th:field="*{about}"
+                                      id="about_field"
                                       placeholder="Enter something about yourself"
-                                      rows="6" class="form-control"></textarea>
+                                      rows="6"
+                                      class="form-control"
+                                      th:classappend="${#fields.hasErrors('about')} ? 'is-invalid' : ''"></textarea>
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('about')}"
+                                 th:each="e : ${#fields.errors('about')}"
+                                 th:text="${e}"></div>
                         </div>
 
                         <!-- terms and conditions -->
-                        <div class="form-group form-check text-center">
-                            <input type="checkbox" id="agreement" name="agreement" />
-                            <label for="agreement">Accept terms and conditions</label>
+                        <div class="mb-3 text-center">
+                            <div class="form-check d-inline-block">
+                                <input type="checkbox" id="agreement" name="agreement" class="form-check-input" required />
+                                <label class="form-check-label" for="agreement">
+                                    Accept terms and conditions
+                                </label>
+                            </div>
                         </div>
 
+
                         <!-- buttons -->
-                        <div class="container text-center">
-                            <button type="submit" class="btn bg-primary text-white">Submit</button>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary text-white">Submit</button>
                             <button type="reset" class="btn btn-warning">Reset</button>
                         </div>
+
                     </form>
 
                 </div>

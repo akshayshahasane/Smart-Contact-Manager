@@ -3,9 +3,12 @@ package com.example.smartcontactmanager.controller;
 import com.example.smartcontactmanager.entities.User;
 import com.example.smartcontactmanager.helper.Message;
 import com.example.smartcontactmanager.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,13 +46,20 @@ public class HomeController {
     // handler for register user
     @RequestMapping(value = "/do_register", method = RequestMethod.POST)
     public String registerUser(
-            @ModelAttribute("user") User user,
+            @Valid
+            @ModelAttribute("user") User user,BindingResult result1,
             @RequestParam(value = "agreement", defaultValue = "false") boolean agreement,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, ModelMap modelMap) {
 
         try {
             if (!agreement) {
                 throw new Exception("You must accept terms and conditions");
+            }
+
+            if (result1.hasErrors()) {
+                System.out.println("Error "+result1.toString());
+                modelMap.addAttribute("user",user);
+                return "signup";
             }
 
             user.setRole("ROLE_USER");
