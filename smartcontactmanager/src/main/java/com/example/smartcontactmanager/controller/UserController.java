@@ -9,7 +9,6 @@ public class UserController {
 
     @RequestMapping("/index")
     public String dashboard(){
-
         return "normal/user_dashboard";
     }
 }
