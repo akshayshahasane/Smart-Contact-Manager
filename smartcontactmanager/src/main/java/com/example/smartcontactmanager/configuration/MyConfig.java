@@ -36,12 +36,6 @@ public class MyConfig {
 
     // AuthenticationManager bean
     @Bean
-    protected AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
-
-    // Security filter chain
-    @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
@@ -49,10 +43,22 @@ public class MyConfig {
                         .requestMatchers("/user/**").hasRole("USER")
                         .requestMatchers("/**").permitAll()
                 )
-                .formLogin(form -> form.permitAll()  // Use Spring default login page
-                );
-
-
+                .formLogin(form -> form
+                        .loginPage("/signin")
+                        .loginProcessingUrl("/signin") // URL to submit the login form
+                        .defaultSuccessUrl("/user/index") // after successful login
+                        .failureUrl("/signin?error=true")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")             // URL to trigger logout
+                        .logoutSuccessUrl("/signin?logout=true") // redirect after logout
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                )
+                .csrf(csrf -> csrf.disable()); // optional: disable CSRF temporarily
         return http.build();
     }
+
 }
