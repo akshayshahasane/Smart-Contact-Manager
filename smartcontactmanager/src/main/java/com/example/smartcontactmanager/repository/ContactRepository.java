@@ -17,4 +17,6 @@ public interface ContactRepository extends JpaRepository<Contact, Integer> {
     //currentPage-page
     //Contact Per page - 5
     public Page<Contact> findContactsByUser(@Param("userId") int userId, Pageable pageable);
+
+    Integer cId(int cId);
 }
