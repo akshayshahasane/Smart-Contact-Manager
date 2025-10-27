@@ -237,10 +237,50 @@ public class UserController {
     //your profile handler
 
     @GetMapping("/profile")
-    public String yourProfile(Model model) {
-
+    public String yourProfile(Model model, Principal principal) {
+        String userName = principal.getName();
+        User user = userRepository.getUserByUserName(userName);
+        model.addAttribute("user", user);
         model.addAttribute("title", "Profile Page");
         return "normal/profile";
     }
+
+
+    // Show update form
+    @GetMapping("/update-profile")
+    public String showUpdateForm(Model model, Principal principal) {
+        String userName = principal.getName();
+        User user = userRepository.getUserByUserName(userName);
+        model.addAttribute("user", user);
+        model.addAttribute("title", "Update Profile");
+        return "normal/update_profile";
+    }
+
+
+    @PostMapping("/update-profile")
+    public String updateUser(@ModelAttribute("user") User user, Principal principal, HttpSession session) {
+        try {
+            User loggedInUser = userRepository.getUserByUserName(principal.getName());
+            // update only allowed fields
+            loggedInUser.setName(user.getName());
+            loggedInUser.setEmail(user.getEmail());
+            userRepository.save(loggedInUser);
+
+            session.setAttribute("message", new Message("Profile updated successfully!", "success"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.setAttribute("message", new Message("Something went wrong!", "danger"));
+        }
+        return "redirect:/user/profile";
+    }
+
+    @PostMapping("/delete-profile")
+    public String deleteUser(Principal principal) {
+        User user = userRepository.getUserByUserName(principal.getName());
+        userRepository.delete(user);
+        return "redirect:/logout";
+    }
+
+
 
 }
