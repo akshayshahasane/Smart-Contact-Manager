@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 
     <title th:text="${title}">Base html</title>
+
 </head>
 <body>
 
@@ -55,11 +56,11 @@
 
          <span onclick="toggleSidebar()"  class="crossBtn">&times;</span>
 
-         <a href="#" th:href="@{/user/index}" class="item"> <i class="fa-solid fa-house"></i> Home</a>
-         <a href="#" th:href="@{/user/show-contacts/0}" class="item"> <i class="fa-solid fa-address-card"></i> View Contacts</a>
-         <a href="#" th:href="@{/user/add-contact}" class="item"> <i class="fa-solid fa-pencil"></i> Add Contact</a>
-         <a href="#" th:href="@{/user/profile}" class="item"> <i class="fa-solid fa-user"></i> Your profile</a>
-         <a href="#" class="item"> <i class="fa-solid fa-gear"></i> Settings</a>
+         <a id="home-link" href="#" th:href="@{/user/index}" class="item active"> <i class="fa-solid fa-house"></i> Home</a>
+         <a id="contacts-link" href="#" th:href="@{/user/show-contacts/0}" class="item"> <i class="fa-solid fa-address-card"></i> View Contacts</a>
+         <a id="add-link" href="#" th:href="@{/user/add-contact}" class="item"> <i class="fa-solid fa-pencil"></i> Add Contact</a>
+         <a id="profile-link" href="#" th:href="@{/user/profile}" class="item"> <i class="fa-solid fa-user"></i> Your profile</a>
+         <a id="settings-link" href="#" class="item"> <i class="fa-solid fa-gear"></i> Settings</a>
          <a href="#" th:href="@{/logout}" class="item"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a>
          <div class="divider"></div>
 
@@ -141,5 +142,22 @@
 
 
 <script th:src="@{/js/script.js}"></script>
+
+<script>
+    $(document).ready(function() {
+        let currentPath = window.location.pathname;
+
+        $(".sidebar .item").each(function() {
+            let linkPath = $(this).attr("href");
+
+            if (currentPath.startsWith(linkPath)) {
+                $(this).addClass("active");
+            } else {
+                $(this).removeClass("active");
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
