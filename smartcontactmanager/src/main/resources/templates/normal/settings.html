@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::Layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Settings</title>
+</head>
+<body>
+<section>
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="card">
+
+                    <div class="card-body">
+
+                        <h3 class="mb-3">Change password</h3>
+
+                        <form th:action="@{/user/change-password}" method="post" class="mt-4">
+
+                            <!-- Old Password -->
+                            <div class="form-group mb-3">
+                                <label for="oldPassword" class="form-label fw-semibold">Old Password</label>
+                                <input type="password" id="oldPassword" name="oldPassword"
+                                       class="form-control" placeholder="Enter old password" required>
+                            </div>
+
+                            <!-- New Password -->
+                            <div class="form-group mb-3">
+                                <label for="newPassword" class="form-label fw-semibold">New Password</label>
+                                <input type="password" id="newPassword" name="newPassword"
+                                       class="form-control" placeholder="Enter new password" required>
+                            </div>
+
+
+                            <!-- Submit Button -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-block text-uppercase px-5">
+                                    Update
+                                </button>
+
+                                <button type="reset" class="btn btn-primary btn-block text-uppercase px-5">
+                                    Reset
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>
